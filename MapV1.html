@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h1>Event Map</h1>
+<div id="map"></div>
+</body>
+
+</html>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzYgl2pfS4XEpC8FajPV-k4HgPXfcPgg&callback=initMap">
+</script>
+
+<script>
+    function initMap() {
+        console.log('i fired');
+        let map = new google.maps.Map(
+            document.getElementById('map'),
+            {zoom: 4, center: {lat: -25.344, lng: 131.036}}
+        )
+    }
+</script>
