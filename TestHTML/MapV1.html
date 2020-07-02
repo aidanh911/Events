@@ -6,10 +6,38 @@
             height: 400px;
             width: 100%;
         }
+        input {
+            margin: 1em
+        }
+
     </style>
 </head>
 <body>
 <h1>EVENTS</h1>
+<div style="border: 1px solid black; margin: 2em; padding: 2em; width: 38%;">
+    <form id="createNewEvent">
+        <label for="eventName">Name:</label>
+        <input id="eventName" type="text" name="eventName">
+
+        <label for="eventDate">Date:</label>
+        <input id="eventDate" type="text" name="eventName">
+
+        <label for="eventDate">Address:</label>
+        <input id="eventAddress" type="text" name="eventAddress">
+
+        <label for="eventCity">City:</label>
+        <input id="eventCity" type="text" name="eventCity">
+
+        <label for="eventState">State:</label>
+        <input id="eventState" type="text" name="eventState" minlength="2" maxlength="2">
+
+        <label for="eventZip">Zip:</label>
+        <input id="eventZip" type="text" name="eventZip">
+
+        <input type="submit" value="Create New Event">
+    </form>
+</div>
+
 <div id="map"></div>
 </body>
 
@@ -23,6 +51,13 @@
 <script>
     $(document).ready(function() {
         console.log('we have jquery');
+
+        $('#createNewEvent').submit(function () {
+
+            alert('hello');
+
+            this.preventDefault();
+        });
     });
 
     $('#myForm').submit(function() {
