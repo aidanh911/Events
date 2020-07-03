@@ -48,6 +48,15 @@
 <!--        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzYgl2pfS4XEpC8FajPV-k4HgPXfcPgg&callback=initMap">-->
 <!--</script>-->
 
+$(function(){
+$(':text').blur(function(e){
+localStorage.setItem("flag", "set");
+var data = $('#wellnessForm').serializeArray();
+$.each(data, function(i, obj){
+localStorage.setItem(obj.name, obj.value);
+});
+});
+
 <script>
     $(document).ready(function() {
         $('#createNewEvent').submit(function(event) {
