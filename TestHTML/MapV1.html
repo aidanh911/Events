@@ -50,20 +50,15 @@
 
 <script>
     $(document).ready(function() {
-        console.log('we have jquery');
-
         $('#createNewEvent').submit(function () {
+            let inputs = $('#createNewEvent :input');
 
-            alert('hello');
+            console.log(inputs);
 
             this.preventDefault();
         });
     });
 
-    $('#myForm').submit(function() {
-        // get all the inputs into an array.
-        var $inputs = $('#myForm :input');
-    });
 
     function initMap() {
         console.log('i fired');
