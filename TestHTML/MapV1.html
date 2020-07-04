@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
-    #map {
-      height: 400px;
-      width: 100%;
-    }
-    input {
-      margin: 1em
-    }
-    textarea {
-      vertical-align: top;
-    }
-    #formContainer {
-      border: 1px solid black;
-      margin: 2em;
-      padding: 2em;
-      width: 38%;
-    }
-  </style>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+
+        input {
+            margin: 1em
+        }
+
+        textarea {
+            vertical-align: top;
+        }
+
+        #formContainer {
+            border: 1px solid black;
+            margin: 2em;
+            padding: 2em;
+            width: 38%;
+        }
+    </style>
 </head>
 <body>
 <h1>EVENTS</h1>
 <div id="formContainer">
-  <form id="createNewEvent">
-    <label for="eventName">Name:</label>
-    <input id="eventName" type="text" name="eventName" value="" placeholder="a catchy name">
+    <form id="createNewEvent">
+        <label for="eventName">Name:</label>
+        <input id="eventName" type="text" name="eventName" value="" placeholder="a catchy name">
 
-    <label for="eventDate">Date:</label>
-    <input id="eventDate" type="text" name="eventDate" value="" placeholder="yy-mm-dd 12:00:00">
+        <label for="eventDate">Date:</label>
+        <input id="eventDate" type="text" name="eventDate" value="" placeholder="yy-mm-dd 12:00:00">
 
-    <label for="eventDate">Address:</label>
-    <input id="eventAddress" type="text" name="eventAddress" value="" placeholder="Physical Address">
+        <label for="eventDate">Address:</label>
+        <input id="eventAddress" type="text" name="eventAddress" value="" placeholder="Physical Address">
 
-    <label for="eventCity">City:</label>
-    <input id="eventCity" type="text" name="eventCity" value="" placeholder="City">
+        <label for="eventCity">City:</label>
+        <input id="eventCity" type="text" name="eventCity" value="" placeholder="City">
 
-    <label for="eventState">State:</label>
-    <input id="eventState" type="text" name="eventState" minlength="2" maxlength="2" value="" placeholder="2 character state">
+        <label for="eventState">State:</label>
+        <input id="eventState" type="text" name="eventState" minlength="2" maxlength="2" value=""
+               placeholder="2 character state">
 
-    <label for="eventZip">Zip:</label>
-    <input id="eventZip" type="text" name="eventZip" value="" placeholder="Postal Code">
+        <label for="eventZip">Zip:</label>
+        <input id="eventZip" type="text" name="eventZip" value="" placeholder="Postal Code">
 
-    <div>
-      <label for="note" style="text-align: top;">
-       Event Description:
-      </label>
-      <textarea id="note" name="note" placeholder="Describe your event:" rows="10" cols="40"></textarea>
-    </div>
+        <div>
+            <label for="note" style="text-align: top;">
+                Event Description:
+            </label>
+            <textarea id="note" name="note" placeholder="Describe your event:" rows="10" cols="40"></textarea>
+        </div>
 
-    <div style="text-align: right;">
-      <button type="submit" value=""><span style="color: firebrick;">Create New Event</span></button>
-    </div>
-  </form>
+        <div style="text-align: right;">
+            <button type="submit" value=""><span style="color: firebrick;">Create New Event</span></button>
+        </div>
+    </form>
 </div>
 
 <div style="margin: 2em;">
-  <h2>These are the localstorage keys: <br><span style="color: lightgray">(select one to see its value)</span></h2>
-  <select id="localStorageKeys">
-    <option value="eventName">EventName</option>
-    <option value="eventDate">EventDate</option>
-    <option value="eventAddress">EventAddress</option>
-  </select>
+    <h2>These are the localstorage keys: <br><span style="color: lightgray">(select one to see its value)</span></h2>
+    <select id="localStorageKeys">
+        <option value="eventName">EventName</option>
+        <option value="eventDate">EventDate</option>
+        <option value="eventAddress">EventAddress</option>
+    </select>
 </div>
 
 <div id="mapNewEvent">
-  <button id="createMap">Map My Event</button>
+    <button id="createMap">Map My Event</button>
 </div>
 
 <div>
-  <p>This is where I write general text about my application inside a DIV inside a P</p>
+    <p>This is where I write general text about my application inside a DIV inside a P</p>
 </div>
 
 <div id="map"></div>
@@ -84,52 +88,72 @@
 <!--</script>-->
 
 <script>
-  $(document).ready(function () {
-    $('#createNewEvent').submit(function (event) {
+    $(document).ready(function () {
+        $('#createNewEvent').submit(function (event) {
 
-      /**
-       * Look to my form id="createNewEvent"
-       *  and serialize to an array all of its
-       *  form elements values...input, textarea
-      */
-      let formValues = $('#createNewEvent').serializeArray();
-      submitForm(formValues);
+            /**
+             * Look to my form id="createNewEvent"
+             *  and serialize to an array all of its
+             *  form elements values...input, textarea
+             */
+            let formValues = $('#createNewEvent').serializeArray();
 
-      event.preventDefault();
+            submitForm(formValues);
+
+            event.preventDefault();
+        });
+
+        $('#localStorageKeys').change(function (e) {
+            /** Get the value of the selected option in the HTML */
+            let selectedLocalStorageKey = $('#localStorageKeys option:selected').val();
+
+            /** Get the value of the key that was selected from localstorage */
+            let localStorageValue = localStorage.getItem(selectedLocalStorageKey);
+
+            alert('My localstorage KEY: "' + selectedLocalStorageKey + '" has a value of : "' + localStorageValue + '"');
+        });
+
+        $('#createMap').click(function () {
+            alert('map new event button clicked');
+        });
     });
 
-    $('#localStorageKeys').change(function (e) {
-      /** Get the value of the selected option in the HTML */
-      let selectedLocalStorageKey = $('#localStorageKeys option:selected').val();
+    function eventMarker(address) {
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode({"markerAddress": address}, function (results, status) {
+            if (status == 'OK') {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
 
-      /** Get the value of the key that was selected from localstorage */
-      let localStorageValue = localStorage.getItem(selectedLocalStorageKey);
+    function submitForm(formValues) {
+        $.each(formValues, function (index, objectValue) {
+            localStorage.setItem(objectValue.name, objectValue.value);
 
-      alert('My localstorage KEY: "' + selectedLocalStorageKey + '" has a value of : "' + localStorageValue + '"');
-    });
+            let markerAddress = $("input[name='eventAddress']");
 
-    $('#createMap').click(function() {
-      alert('map new event button clicked');
-    });
-  });
+            eventMarker(markerAddress);
+        });
+    }
 
-  function submitForm (formValues) {
-    $.each(formValues, function (index, objectValue) {
-      localStorage.setItem(objectValue.name, objectValue.value);
-    });
-  }
+    // function addMarker (formValues) {
+    //   let myStateFieldValue = formValues[4].value;
+    //   console.log('All of my inputs object | ', formValues);
+    //   console.log('My State Value is | ', myStateFieldValue);
+    // }
 
-  // function addMarker (formValues) {
-  //   let myStateFieldValue = formValues[4].value;
-  //   console.log('All of my inputs object | ', formValues);
-  //   console.log('My State Value is | ', myStateFieldValue);
-  // }
-
-  // function initMap() {
-  //     console.log('i fired');
-  //     let map = new google.maps.Map(
-  //         document.getElementById('map'),
-  //         {zoom: 4, center: {lat: -25.344, lng: 131.036}}
-  //     )
-  // }
+    // function initMap() {
+    //     console.log('i fired');
+    //     let map = new google.maps.Map(
+    //         document.getElementById('map'),
+    //         {zoom: 4, center: {lat: -25.344, lng: 131.036}}
+    //     )
+    // }
 </script>
