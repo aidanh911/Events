@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Map</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h1>Event Map</h1>
+<div id="map"></div>
+<h1>Create Event</h1>
+
+<form id="createEvent" name="createEvent">
+    Name: <input id="eventName" type="text" name="eventName" value=""></br>
+    Address: <input id="address" type="text" name="address" value=""></br>
+    Time: <input id="time" type="text" name="time" value=""></br>
+    Notes: <textarea id="notes" type="text" name="notes" value="" rows="10" cols="40"></textarea></br>
+
+    <input type="button" value="MapMe" onclick="codeAddress()">
+
+</form>
+</body>
+</html>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzYgl2pfS4XEpC8FajPV-k4HgPXfcPgg&callback=initialize">
+</script>
+
+<script>
+    var geocoder= new google.maps.Geocoder();
+    function codeAddress() {
+        let address = document.getElementById('address').value;
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == 'OK') {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var mapOptions = {
+            zoom: 8,
+            center: latlng
+        }
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    }
+
+
+    //function initMap() {
+        //console.log('i fired');
+        //let map = new google.maps.Map(
+            //document.getElementById('map'),
+            //{zoom: 4, center: {lat: -25.344, lng: 131.036}}
+        //)
+    //}
+</script>

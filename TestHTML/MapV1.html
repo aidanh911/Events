@@ -16,11 +16,11 @@
 </html>
 
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzYgl2pfS4XEpC8FajPV-k4HgPXfcPgg&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrzYgl2pfS4XEpC8FajPV-k4HgPXfcPgg&callback=initialize">
 </script>
 
 <script>
-    function initMap() {
+    function initialize() {
         console.log('i fired');
         let map = new google.maps.Map(
             document.getElementById('map'),
